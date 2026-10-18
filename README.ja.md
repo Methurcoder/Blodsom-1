@@ -94,16 +94,17 @@ setup は [trellis-mac](https://github.com/shivampkumar/trellis-mac) と TRELLIS
 | `--no-prefetch` | RAM を減らす(少し遅くなる) |
 | `--ram-limit GB` | Windows:物理メモリを制限して、小さい機械を試す |
 | `--save-mesh` | 元のメッシュとボクセルの値も保存(`.pt`) |
+| `--rembg` | 背景つきの画像の背景を BiRefNet(MIT)で消す。結果は元と一致しない |
 | `--save-cutout` | 背景除去・切り出し後の画像も保存(`_cutout.png`) |
 | `--resident` | メモリに余裕がある機械向け(約 24GB)。全モデルを読み込んだままにし、メモリの片付けを省く。結果は同じ |
 
 **制限**
 
-- **背景除去。** 背景が透過した PNG は、元と同じくそのまま使い、結果は1ビットも違いません。それ以外の画像は、
-  元の TRELLIS.2 は RMBG-2.0(同意が必要・非商用)で背景を消しますが、Blodsom-1 は代わりに
-  [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet)(MIT、同意不要)を使います。RMBG-2.0 も BiRefNet なので
-  仕組みは同じですが重みが違い、**こうした画像の結果は元とは一致しません**。`--save-cutout` で切り抜き結果を保存でき、
-  `--no-rembg` で背景つきの画像を受け付けないようにもできます。
+- **背景除去。** 画像は **背景が透過した PNG** にしてください。元と同じくそのまま使い、結果は1ビットも違いません。
+  それ以外の画像は、元の TRELLIS.2 は RMBG-2.0(同意が必要・非商用)で背景を消しますが、Blodsom-1 では
+  オプション `--rembg` で [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet)(MIT、同意不要)を使えます。
+  RMBG-2.0 も BiRefNet なので仕組みは同じですが重みが違い、**こうした画像の結果は元とは一致しません**。
+  `--save-cutout` で切り抜き結果を保存できます。
 - GLB の色は **頂点カラー** です(焼き込んだ PBR テクスチャではありません)。テクスチャの焼き込みには CUDA / Metal の
   拡張のビルドが必要なためです。形と各ボクセルの色は元と同じです。
 

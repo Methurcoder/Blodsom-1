@@ -96,18 +96,18 @@ This writes `character.glb`. Several images can be given at once (`generate.py a
 | `--no-prefetch` | less RAM, a little slower |
 | `--ram-limit GB` | Windows: cap physical memory to test a smaller machine |
 | `--save-mesh` | also save the raw mesh and voxel attributes (`.pt`) |
+| `--rembg` | remove the background of pictures without transparency with BiRefNet (MIT); results differ from the original |
 | `--save-cutout` | also save the picture after background removal and cropping (`_cutout.png`) |
 | `--resident` | machines with memory to spare (about 24 GB): keep every model loaded and skip memory trimming. Same result |
 
 **Limits**
 
-- **Background removal.** A picture with a transparent background (PNG with alpha) is used as is,
-  exactly as the original does, and the result is bit-identical. For any other picture the original
-  removes the background with RMBG-2.0, which needs a sign-up and is non-commercial. Blodsom-1 uses
-  [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet) (MIT, no sign-up) instead: RMBG-2.0 is a
-  BiRefNet model, so the design is the same but the weights differ, and **results for those pictures
-  differ from the original's**. `--save-cutout` saves what the model sees; `--no-rembg` refuses such
-  pictures instead.
+- **Background removal.** The image needs a **transparent background** (PNG with alpha); it is
+  used as is, exactly as the original does, and the result is bit-identical. For other pictures the
+  original removes the background with RMBG-2.0, which needs a sign-up and is non-commercial.
+  Blodsom-1 offers [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet) (MIT, no sign-up) as an
+  option, `--rembg`: RMBG-2.0 is a BiRefNet model, so the design is the same but the weights differ,
+  and **results for those pictures differ from the original's**. `--save-cutout` saves what the model sees.
 - The GLB has **vertex colours**, not baked PBR textures: texture baking needs compiled CUDA / Metal
   extensions. The geometry and the colour of every voxel are the original's.
 

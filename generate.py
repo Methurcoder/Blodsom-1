@@ -9,10 +9,11 @@ for a given image and seed; it needs far less memory and takes longer.
 --resident keeps every model loaded after first use and skips the memory
 trimming, so the second image onwards loads nothing. Same result either way.
 
-Images with a transparent background (PNG with alpha) go in as they are, as in
-the original. For other images the background is removed first with BiRefNet
-(MIT) where the original uses RMBG-2.0 (sign-up, non-commercial): the same
-model design with different weights, so those results differ from the original.
+The image needs a transparent background (PNG with alpha), used as is, as in
+the original. With --rembg, other images have their background removed first
+with BiRefNet (MIT) where the original uses RMBG-2.0 (sign-up, non-commercial):
+the same model design with different weights, so those results differ from the
+original.
 """
 import os
 import sys
@@ -46,7 +47,7 @@ def limit_ram(gb):
 def main():
     parser = argparse.ArgumentParser(description="Image to 3D with TRELLIS.2 in little memory")
     parser.add_argument("images", nargs="+", metavar="image",
-                        help="picture of one subject; with a transparent background it is used as is")
+                        help="PNG with a transparent background (any picture with --rembg)")
     parser.add_argument("--output", help="GLB to write (one image only; default: next to the image)")
     parser.add_argument("--type", default="1024_cascade", choices=["512", "1024", "1024_cascade", "1536_cascade"],
                         help="pipeline type (default 1024_cascade, the original's default)")
@@ -56,8 +57,8 @@ def main():
     parser.add_argument("--save-mesh", action="store_true", help="also save the raw mesh and voxels (.pt)")
     parser.add_argument("--save-cutout", action="store_true",
                         help="also save the image as the model sees it after background removal (_cutout.png)")
-    parser.add_argument("--no-rembg", action="store_true",
-                        help="refuse images without transparency instead of removing their background")
+    parser.add_argument("--rembg", action="store_true",
+                        help="remove the background of images without transparency (BiRefNet, MIT; differs from the original)")
     parser.add_argument("--stream", action="store_true",
                         help="send flow-model blocks to the GPU one at a time (for GPUs under 4 GB; much slower)")
     parser.add_argument("--no-prefetch", action="store_true",
@@ -73,8 +74,9 @@ def main():
     for path in a.images:
         image = Image.open(path)
         transparent = image.mode in ("RGBA", "LA", "P") and not np.all(np.array(image.convert("RGBA"))[..., 3] == 255)
-        if not transparent and a.no_rembg:
-            raise SystemExit(f"{path} has no transparent background (and --no-rembg is set).")
+        if not transparent and not a.rembg:
+            raise SystemExit(f"{path} has no transparent background. Use a PNG with transparency, "
+                             "or add --rembg to remove the background with BiRefNet.")
         images.append((path, image.convert("RGBA") if transparent else image.convert("RGB"), transparent))
     if a.ram_limit:
         limit_ram(a.ram_limit)
@@ -96,7 +98,8 @@ def main():
     lite.PREFETCH = device.type == "cuda" and not a.no_prefetch
 
     print(f"device: {torch.cuda.get_device_name(0) if device.type == 'cuda' else device.type}", flush=True)
-    pipe = lite.from_pretrained(device=device, pipeline_types=[a.type], rembg_factory=rembg.birefnet,
+    pipe = lite.from_pretrained(device=device, pipeline_types=[a.type],
+                                rembg_factory=rembg.birefnet if a.rembg else None,
                                 on_load=lambda name: print(f"  {name}", flush=True))
     for path, image, transparent in images:
         output = a.output or os.path.splitext(path)[0] + ".glb"
