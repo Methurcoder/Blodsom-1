@@ -25,6 +25,7 @@ before, not for running it fast.
 - Expect **around 3 minutes per model**, and more on slower GPUs.
 - Every run loads each model from disk again (about 10 s on the RTX 3050).
 - `--stream` (for GPUs under 4 GB) is slower again: about 300 s on the RTX 3050 in an earlier measurement.
+- `--resident` helps a little when memory is plentiful: on the M5, 178 s → 157 s for the first image and 138 s from the second (same result), with up to 24 GB in use. Large models gain little (3.3 M vertices: 363 s → 362 s).
 - A faster mode (fewer steps / distillation, results change slightly) is planned as a separate option.
 
 ## How it fits
@@ -81,7 +82,7 @@ mesh extraction), and installs the dependencies into `.venv`. No compiler and no
 .venv\Scripts\python generate.py character.png          # Windows
 ```
 
-This writes `character.glb`. Options:
+This writes `character.glb`. Several images can be given at once (`generate.py a.png b.png c.png`). Options:
 
 | Option | |
 |---|---|
@@ -92,6 +93,7 @@ This writes `character.glb`. Options:
 | `--no-prefetch` | less RAM, a little slower |
 | `--ram-limit GB` | Windows: cap physical memory to test a smaller machine |
 | `--save-mesh` | also save the raw mesh and voxel attributes (`.pt`) |
+| `--resident` | machines with memory to spare (about 24 GB): keep every model loaded and skip memory trimming. Same result |
 
 **Limits**
 

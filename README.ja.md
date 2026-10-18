@@ -24,6 +24,7 @@ Blodsom-1 は、時間と引き換えにメモリを減らしています。今�
 - **1体あたり3分前後** かかると思ってください。遅い GPU ではさらにかかります。
 - 実行のたびに、各モデルをディスクから読み直します(RTX 3050 で約 10 秒)。
 - `--stream`(VRAM 4GB 未満向け)はさらに遅く、以前の計測では RTX 3050 で約 300 秒でした。
+- メモリに余裕があれば `--resident` で少し速くなります。M5 で 1枚目 178 秒 → 157 秒、2枚目以降 138 秒(結果は同じ、使用は最大 24GB)。大きなモデルではほぼ変わりません(330万頂点で 363 秒 → 362 秒)。
 - 速さ優先のモード(ステップ削減・蒸留。結果は少し変わる)は、別オプションとして予定しています。
 
 ## どうやって収めたか
@@ -80,7 +81,7 @@ setup は [trellis-mac](https://github.com/shivampkumar/trellis-mac) と TRELLIS
 .venv\Scripts\python generate.py character.png          # Windows
 ```
 
-`character.glb` ができます。オプション:
+`character.glb` ができます。複数の画像をまとめて渡せます(`generate.py a.png b.png c.png`)。オプション:
 
 | オプション | |
 |---|---|
@@ -91,6 +92,7 @@ setup は [trellis-mac](https://github.com/shivampkumar/trellis-mac) と TRELLIS
 | `--no-prefetch` | RAM を減らす(少し遅くなる) |
 | `--ram-limit GB` | Windows:物理メモリを制限して、小さい機械を試す |
 | `--save-mesh` | 元のメッシュとボクセルの値も保存(`.pt`) |
+| `--resident` | メモリに余裕がある機械向け(約 24GB)。全モデルを読み込んだままにし、メモリの片付けを省く。結果は同じ |
 
 **制限**
 

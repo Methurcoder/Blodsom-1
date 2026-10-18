@@ -44,11 +44,15 @@ def _neighbours(coords, kernel, dilation):
     return table
 
 
+# Off when memory is plentiful (resident mode): each call can wait for the GPU.
+RELIEVE = True
+
+
 def relieve():
     """Hands cached-but-unused device memory back before a large allocation.
     The CUDA allocator does this by itself when an allocation would fail; the
     MPS allocator reports out of memory instead, with the cache still held."""
-    if torch.backends.mps.is_available():
+    if RELIEVE and torch.backends.mps.is_available():
         if torch.mps.driver_allocated_memory() - torch.mps.current_allocated_memory() > 256 * 2**20:
             # Buffers of queued GPU work are only freed once it has run.
             torch.mps.synchronize()

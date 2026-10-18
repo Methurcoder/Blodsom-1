@@ -47,6 +47,9 @@ TRIM_DECODER_CACHE = False
 LOAD_SECONDS = {}  # seconds spent reading each model's weights
 # Read the next stage's weights into RAM while the current stage computes.
 PREFETCH = False
+# Resident mode, for machines with memory to spare: every model stays loaded
+# after first use, so later images in the same process load nothing.
+KEEP_LOADED = False
 
 # Order in which the pipeline uses its models (Trellis2ImageTo3DPipeline.run).
 USE_ORDER = {
@@ -257,7 +260,7 @@ class Residency:
         self.prefetcher = None
 
     def start(self, pipeline_type):
-        if PREFETCH and self.prefetcher is None:
+        if PREFETCH and not KEEP_LOADED and self.prefetcher is None:
             largest = max(os.path.getsize(f"{p.path}.safetensors") for p in self.proxies.values())
             self.prefetcher = Prefetcher(self.device, largest)
         kind = "cascade" if "cascade" in pipeline_type else pipeline_type
@@ -283,7 +286,7 @@ class Residency:
     def take(self, proxy):
         if self.current is proxy:
             return
-        if self.current is not None:
+        if self.current is not None and not KEEP_LOADED:
             self.current._unload()
         self.current = proxy
         if self.on_first_take:
@@ -293,8 +296,9 @@ class Residency:
             self.on_load(proxy.name)
 
     def clear(self):
-        if self.current is not None:
-            self.current._unload()
+        for proxy in self.proxies.values():
+            if proxy._model is not None:
+                proxy._unload()
         self.current = None
 
 
@@ -508,12 +512,13 @@ def from_pretrained(repo="microsoft/TRELLIS.2-4B", device=None, image_cond_model
 
     def run(image, *a, pipeline_type=None, **k):
         residency.start(pipeline_type or pipe.default_pipeline_type)
-        if hasattr(pipe.image_cond_model, "drop"):
+        drop = hasattr(pipe.image_cond_model, "drop") and not KEEP_LOADED
+        if drop:
             residency.on_first_take = pipe.image_cond_model.drop
         try:
             return original_run(image, *a, pipeline_type=pipeline_type, **k)
         finally:
-            if hasattr(pipe.image_cond_model, "drop"):
+            if drop:
                 pipe.image_cond_model.drop()
 
     pipe.run = run
