@@ -18,7 +18,7 @@ before, not for running it fast.
 
 | Machine | 1024 cascade, one image |
 |---|---|
-| NVIDIA H100 (original TRELLIS.2, from its README, 1024³) | about **17 s** |
+| NVIDIA H100 (original TRELLIS.2 — **official figure** published by Microsoft for 1024³, not measured here) | about **17 s** |
 | Apple M5, 32 GB (original as trellis-mac ships it, no Metal extensions, every model loaded) | about **330 s** |
 | RTX 3050 Laptop 4 GB, 16 GB RAM (original as trellis-mac ships it, every model loaded, moved between CPU and GPU) | about **4,900 s** (82 min) |
 | RTX 3050 Laptop 4 GB + 6.5 GB RAM (Blodsom-1) | about **174 s** (3 min) |
