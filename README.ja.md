@@ -106,7 +106,7 @@ setup は [trellis-mac](https://github.com/shivampkumar/trellis-mac) と TRELLIS
 
 「1ビットも違わない」は、同じ機器・同じ PyTorch での話です。GPU が違えば(Mac と NVIDIA でも)丸め方が変わるのは、元の TRELLIS.2 でも同じです。
 
-検証環境:Apple M5(macOS、PyTorch 2.14)、RTX 3050 Laptop 4GB(Windows、PyTorch 2.11 + CUDA 12.8)。Linux は未検証です。
+検証環境:Apple M5(macOS、PyTorch 2.14)、RTX 3050 Laptop 4GB(Windows、PyTorch 2.11 + CUDA 12.8)。Linux は未検証です。`setup.ps1` はまだまっさらな Windows では試していません(上の RTX 3050 の結果は、同じパッケージを手で入れた環境です)。
 
 ## ライセンス
 

@@ -111,7 +111,7 @@ Bit-identical means: on the same device with the same PyTorch. Different GPUs (o
 round differently, as they do for the original.
 
 Tested: Apple M5 (macOS, PyTorch 2.14) and RTX 3050 Laptop 4 GB (Windows, PyTorch 2.11 + CUDA 12.8).
-Linux has not been tested.
+Linux has not been tested. `setup.ps1` has not yet been run on a fresh Windows install (the RTX 3050 results above used the same packages installed by hand).
 
 ## Licenses
 
