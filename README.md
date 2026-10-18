@@ -20,6 +20,7 @@ before, not for running it fast.
 |---|---|
 | NVIDIA H100 (original TRELLIS.2, from its README, 1024³) | about **17 s** |
 | Apple M5, 32 GB (original as trellis-mac ships it, no Metal extensions, every model loaded) | about **330 s** |
+| RTX 3050 Laptop 4 GB, 16 GB RAM (original as trellis-mac ships it, every model loaded, moved between CPU and GPU) | about **4,900 s** (82 min) |
 | RTX 3050 Laptop 4 GB + 6.5 GB RAM (Blodsom-1) | about **174 s** (3 min) |
 | Apple M5, 32 GB (Blodsom-1) | about **165–180 s** |
 
@@ -114,7 +115,7 @@ Bit-identical means: on the same device with the same PyTorch. Different GPUs (o
 round differently, as they do for the original.
 
 Tested: Apple M5 (macOS, PyTorch 2.14) and RTX 3050 Laptop 4 GB (Windows, PyTorch 2.11 + CUDA 12.8).
-Linux has not been tested. `setup.ps1` has not yet been run on a fresh Windows install (the RTX 3050 results above used the same packages installed by hand).
+Linux has not been tested.
 
 ## Licenses
 

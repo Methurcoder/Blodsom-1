@@ -19,6 +19,7 @@ Blodsom-1 は、時間と引き換えにメモリを減らしています。今�
 |---|---|
 | NVIDIA H100(元の TRELLIS.2、公式 README の 1024³) | 約 **17 秒** |
 | Apple M5 32GB(手を加えない元。trellis-mac そのまま、Metal 拡張なし、全モデルを最初に読み込み) | 約 **330 秒** |
+| RTX 3050 Laptop 4GB、RAM 16GB(手を加えない元。trellis-mac そのまま、全モデルを読み込み CPU と GPU の間で移動) | 約 **4,900 秒**(82分) |
 | RTX 3050 Laptop 4GB + RAM 6.5GB(Blodsom-1) | 約 **174 秒**(3分) |
 | Apple M5 32GB(Blodsom-1) | 約 **165〜180 秒** |
 
@@ -109,7 +110,7 @@ setup は [trellis-mac](https://github.com/shivampkumar/trellis-mac) と TRELLIS
 
 「1ビットも違わない」は、同じ機器・同じ PyTorch での話です。GPU が違えば(Mac と NVIDIA でも)丸め方が変わるのは、元の TRELLIS.2 でも同じです。
 
-検証環境:Apple M5(macOS、PyTorch 2.14)、RTX 3050 Laptop 4GB(Windows、PyTorch 2.11 + CUDA 12.8)。Linux は未検証です。`setup.ps1` はまだまっさらな Windows では試していません(上の RTX 3050 の結果は、同じパッケージを手で入れた環境です)。
+検証環境:Apple M5(macOS、PyTorch 2.14)、RTX 3050 Laptop 4GB(Windows、PyTorch 2.11 + CUDA 12.8)。Linux は未検証です。
 
 ## ライセンス
 
