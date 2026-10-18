@@ -1,0 +1,7 @@
+.venv/
+third_party/
+__pycache__/
+*.pyc
+*.glb
+*.pt
+.DS_Store
