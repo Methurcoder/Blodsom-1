@@ -18,6 +18,7 @@ Blodsom-1 は、時間と引き換えにメモリを減らしています。今�
 | 機械 | 1024 二段、画像1枚 |
 |---|---|
 | NVIDIA H100(元の TRELLIS.2、公式 README の 1024³) | 約 **17 秒** |
+| Apple M5 32GB(手を加えない元。trellis-mac そのまま、Metal 拡張なし、全モデルを最初に読み込み) | 約 **330 秒** |
 | RTX 3050 Laptop 4GB + RAM 6.5GB(Blodsom-1) | 約 **174 秒**(3分) |
 | Apple M5 32GB(Blodsom-1) | 約 **165〜180 秒** |
 
