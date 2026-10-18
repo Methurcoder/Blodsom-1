@@ -9,7 +9,8 @@ the default 1024 cascade on a **laptop RTX 3050 with 4 GB of VRAM and 6.5 GB of 
 Apple Silicon Mac in about 6 GB.
 
 Nothing about the model is changed: no quantisation, no pruning, no fewer steps. For the same image
-and seed, the latents and the mesh are **bit-identical** to the original pipeline running on the same device.
+(with a transparent background) and seed, the latents and the mesh are **bit-identical** to the original
+pipeline running on the same device.
 
 ## ⚠️ It is slow
 
@@ -95,13 +96,18 @@ This writes `character.glb`. Several images can be given at once (`generate.py a
 | `--no-prefetch` | less RAM, a little slower |
 | `--ram-limit GB` | Windows: cap physical memory to test a smaller machine |
 | `--save-mesh` | also save the raw mesh and voxel attributes (`.pt`) |
+| `--save-cutout` | also save the picture after background removal and cropping (`_cutout.png`) |
 | `--resident` | machines with memory to spare (about 24 GB): keep every model loaded and skip memory trimming. Same result |
 
 **Limits**
 
-- The image needs a **transparent background** (PNG with alpha). The original removes backgrounds
-  with RMBG-2.0, which needs a sign-up and is non-commercial; Blodsom-1 does not include it. With a
-  transparent image the original skips that step too, so results match.
+- **Background removal.** A picture with a transparent background (PNG with alpha) is used as is,
+  exactly as the original does, and the result is bit-identical. For any other picture the original
+  removes the background with RMBG-2.0, which needs a sign-up and is non-commercial. Blodsom-1 uses
+  [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet) (MIT, no sign-up) instead: RMBG-2.0 is a
+  BiRefNet model, so the design is the same but the weights differ, and **results for those pictures
+  differ from the original's**. `--save-cutout` saves what the model sees; `--no-rembg` refuses such
+  pictures instead.
 - The GLB has **vertex colours**, not baked PBR textures: texture baking needs compiled CUDA / Metal
   extensions. The geometry and the colour of every voxel are the original's.
 

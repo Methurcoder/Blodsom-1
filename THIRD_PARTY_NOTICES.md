@@ -11,6 +11,7 @@ Their licenses apply to them.
 | trellis-mac (Apple Silicon port, patches and pure-PyTorch backends) | https://github.com/shivampkumar/trellis-mac | MIT — [licenses/trellis-mac-MIT.txt](licenses/trellis-mac-MIT.txt) |
 | DINOv3 ViT-L/16 (weights, via timm) | https://huggingface.co/timm/vit_large_patch16_dinov3.lvd1689m | [DINOv3 License](https://ai.meta.com/resources/models-and-libraries/dinov3-license/) |
 | utils3d | https://github.com/EasternJournalist/utils3d | MIT |
+| BiRefNet (weights and model code, for pictures without transparency) | https://huggingface.co/ZhengPeng7/BiRefNet (revision e2bf8e4) | MIT |
 
 The files under `blodsom/` that change how TRELLIS.2 runs (`conv_lean.py`, `mesh_lean.py`) are
 Blodsom-1's own code; `mesh_lean.py` loads trellis-mac's mesh extraction and replaces its lookup

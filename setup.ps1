@@ -42,7 +42,7 @@ Write-Host "Installing dependencies..."
 Invoke-Checked $Python -m pip install -q --upgrade pip
 Invoke-Checked $Python -m pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cu128
 Invoke-Checked $Python -m pip install -q transformers accelerate huggingface_hub safetensors pillow numpy trimesh scipy `
-    tqdm easydict kornia timm imageio opencv-python-headless psutil fast-simplification
+    tqdm easydict kornia timm imageio opencv-python-headless psutil fast-simplification einops
 Invoke-Checked $Python -m pip install -q "git+https://github.com/EasternJournalist/utils3d.git@$Utils3dCommit"
 
 Write-Host "Patching TRELLIS.2..."

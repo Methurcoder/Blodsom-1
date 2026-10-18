@@ -38,7 +38,7 @@ if command -v uv >/dev/null; then PIP="uv pip install"; else python -m pip insta
 
 echo "Installing dependencies..."
 $PIP torch torchvision transformers accelerate huggingface_hub safetensors pillow numpy trimesh scipy \
-    tqdm easydict kornia timm imageio opencv-python-headless psutil fast-simplification
+    tqdm easydict kornia timm imageio opencv-python-headless psutil fast-simplification einops
 $PIP "git+https://github.com/EasternJournalist/utils3d.git@$UTILS3D_COMMIT"
 
 echo "Patching TRELLIS.2..."
